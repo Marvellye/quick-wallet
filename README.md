@@ -27,6 +27,9 @@
 ```npm install```
 ```npm run start:dev```
 
+## Postman Collection
+https://www.postman.com/smart-8978778/quick-wallet/collection/1erskdf/quick-wallet-service?action=share&creator=44188441
+
 ## Assumptions
 - Single currency (USD)
 - In-memory storage
