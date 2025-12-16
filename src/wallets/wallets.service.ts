@@ -47,4 +47,50 @@ export class WalletsService {
     wallet.transactions.push(tx);
     return wallet;
   }
+  transfer(
+  fromWalletId: string,
+  toWalletId: string,
+  amount: number,
+) {
+  if (fromWalletId === toWalletId) {
+    throw new BadRequestException('Cannot transfer to same wallet');
+  }
+
+  const sender = this.store.get(fromWalletId);
+  const receiver = this.store.get(toWalletId);
+
+  if (!sender || !receiver) {
+    throw new NotFoundException('Wallet not found');
+  }
+
+  if (sender.balance < amount) {
+    throw new BadRequestException('Insufficient balance');
+  }
+
+  sender.balance -= amount;
+  receiver.balance += amount;
+
+  const tx: Transaction = {
+    id: randomUUID(),
+    type: 'TRANSFER',
+    amount,
+    fromWalletId,
+    toWalletId,
+    createdAt: new Date(),
+  };
+
+  sender.transactions.push(tx);
+  receiver.transactions.push(tx);
+
+  return { success: true };
+}
+ getWallet(walletId: string) {
+  const wallet = this.store.get(walletId);
+
+  if (!wallet) {
+    throw new NotFoundException('Wallet not found');
+  }
+
+  return wallet;
+}
 }

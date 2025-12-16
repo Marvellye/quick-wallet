@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Get } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { FundWalletDto } from './dto/fund-wallet.dto';
@@ -19,4 +19,9 @@ export class WalletsController {
   ) {
     return this.service.fundWallet(id, dto.amount);
   }
+
+    @Get(':id')
+    get(@Param('id') id: string) {
+    return this.service.getWallet(id);
+    }
 }
